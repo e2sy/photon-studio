@@ -75,13 +75,25 @@ export function CanvasWorkspace() {
   const documents = useEditor((s) => s.documents);
   const prefs = useEditor((s) => s.prefs);
   const activeLayerId = useEditor((s) => s.activeDoc()?.activeLayerId ?? null);
-  const activeLayerBounds = useEditor((s) => {
+  const activeLayerForBounds = useEditor((s) => {
     const doc = s.activeDoc();
     if (!doc || !doc.activeLayerId) return null;
     const l = doc.layers.find((x) => x.id === doc.activeLayerId);
     if (!l || l.type === 'group' || l.type === 'adjustment') return null;
-    return { x: l.x, y: l.y, width: l.width, height: l.height };
+    return l;
   });
+  // Derive the bounds object outside the selector: returning a fresh object
+  // from a zustand selector breaks useSyncExternalStore snapshot caching
+  // (React error #185, "Maximum update depth exceeded") and white-screens
+  // the app. Selecting the stable layer reference and deriving here is safe.
+  const activeLayerBounds = activeLayerForBounds
+    ? {
+        x: activeLayerForBounds.x,
+        y: activeLayerForBounds.y,
+        width: activeLayerForBounds.width,
+        height: activeLayerForBounds.height,
+      }
+    : null;
 
   // Render the document whenever it changes.
   const renderDoc = useCallback(() => {
