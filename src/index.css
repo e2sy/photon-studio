@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Photon Studio design system primitives — dark theme (default) */
+.ps-input {
+  @apply w-full bg-[#1a1a1a] border border-white/10 rounded px-2 py-1 text-sm text-neutral-200 focus:outline-none focus:border-blue-500;
+}
+.ps-btn {
+  @apply px-3 py-1.5 text-sm rounded bg-[#333] text-neutral-300 hover:bg-[#444] transition-colors;
+}
+.ps-btn-primary {
+  @apply px-3 py-1.5 text-sm rounded bg-blue-600 text-white hover:bg-blue-500 transition-colors;
+}
+
+/* Light theme overrides, applied when <html class="theme-light"> */
+.theme-light {
+  color-scheme: light;
+}
+.theme-light .ps-input {
+  @apply bg-white border-neutral-300 text-neutral-800 focus:border-blue-500;
+}
+.theme-light .ps-btn {
+  @apply bg-neutral-200 text-neutral-700 hover:bg-neutral-300;
+}
+.theme-light .ps-btn-primary {
+  @apply bg-blue-600 text-white hover:bg-blue-500;
+}
